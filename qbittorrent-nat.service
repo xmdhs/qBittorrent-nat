@@ -1,0 +1,12 @@
+[Unit]
+Description=qBittorrent-nat Service
+After=network-online.target qbittorrent-nox@UserName.service
+
+[Service]
+User=root
+Restart=on-failure
+RestartSec=5s
+ExecStart=qBittorrent-nat -c /path/config.json
+
+[Install]
+WantedBy=multi-user.target
