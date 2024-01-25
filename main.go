@@ -38,7 +38,6 @@ func main() {
 		func() {
 			defer time.Sleep(200 * time.Millisecond)
 			err := openPort(ctx, func(pub, pri netip.AddrPort) {
-				log.Printf("%v --> %v", pub, pri)
 				if pub.Port() == pri.Port() {
 					log.Println("公网，无需转发")
 					return
@@ -59,6 +58,7 @@ func main() {
 					log.Println(err)
 					return
 				}
+				log.Printf("%v --> %v --> 127.0.0.1:%v", pub, pri, pub.Port())
 			})
 			if err != nil {
 				log.Println(err)
@@ -73,11 +73,16 @@ func openPort(ctx context.Context, finish func(pub, pri netip.AddrPort)) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	laddr := netip.MustParseAddrPort(lo.Must(natmap.GetLocalAddr()).String())
+	la, err := natmap.GetLocalAddr()
+	if err != nil {
+		return fmt.Errorf("openPort: %w", err)
+	}
+
+	laddr := netip.MustParseAddrPort(la.String())
 
 	errCh := make(chan error, 1)
 
-	m, maddr, err := natmap.NatMap(ctx, stun, laddr.Addr().String(), laddr.Port(), func(err error) {
+	m, maddr, err := natmap.NatMap(ctx, stun, laddr, func(err error) {
 		cancel()
 		select {
 		case errCh <- err:

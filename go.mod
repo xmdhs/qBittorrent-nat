@@ -5,7 +5,7 @@ go 1.21.4
 require (
 	github.com/coreos/go-iptables v0.7.0
 	github.com/samber/lo v1.39.0
-	github.com/xmdhs/natupnp v0.0.0-20240123190543-b16821e2d2c6
+	github.com/xmdhs/natupnp v0.0.0-20240124155825-84bd5482dd49
 )
 
 require (
