@@ -36,7 +36,7 @@ func main() {
 
 	for {
 		func() {
-			defer time.Sleep(200 * time.Millisecond)
+			defer time.Sleep(1 * time.Second)
 			err := openPort(ctx, func(pub, pri netip.AddrPort) {
 				if pub.Port() == pri.Port() {
 					log.Println("公网，无需转发")
@@ -62,6 +62,7 @@ func main() {
 			})
 			if err != nil {
 				log.Println(err)
+				time.Sleep(5 * time.Second)
 				return
 			}
 		}()
