@@ -23,7 +23,7 @@ var (
 
 func init() {
 	flag.StringVar(&configPath, "c", "config.json", "")
-	flag.StringVar(&stun, "s", "stun.sipnet.com:3478", "stun")
+	flag.StringVar(&stun, "s", "turn.cloudflare.com:3478", "stun")
 	flag.Parse()
 }
 
